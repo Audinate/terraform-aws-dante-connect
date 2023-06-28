@@ -1,0 +1,73 @@
+#!/bin/bash
+# Copyright 2023 Audinate Pty Ltd ACN 120 828 006 (Audinate). All rights reserved.
+# Script for configuring Dante Gateway in AWS (on an Ubuntu 20.04 Server Image) using the User Data field
+set -exo pipefail
+
+log_msg()
+{
+    echo "DGW-Configuration: $1" >> /var/log/dgw-configuraton.log
+}
+
+log_msg "Starting ..."
+
+%{ if license_key != null }
+ACTIVATION_OPTS=" --e=${license_key} "
+    %{ if license_settings != null }
+        %{ if license_settings.websocket_port != null }
+            ACTIVATION_OPTS+=" --w=${license_settings.websocket_port} "
+        %{ else }
+            ACTIVATION_OPTS+=" --w=49999 "
+        %{ endif }
+
+        %{ if license_settings.hostname != null }
+            ACTIVATION_OPTS+=" --s=${license_settings.hostname} "
+        %{ endif }
+
+        %{ if license_settings.api_key != null }
+            ACTIVATION_OPTS+=" --k=${license_settings.api_key} "
+        %{ endif }
+
+        log_msg "Running /opt/dep/apps/dante_activator activate $ACTIVATION_OPTS"
+        /opt/dep/apps/dante_activator activate $ACTIVATION_OPTS
+    %{ else }
+        log_msg "No license settings available to activate DGW"
+    %{ endif }
+%{ else }
+    log_msg "No license key available to activate DGW"
+%{ endif }
+
+log_msg "Stopping DGW ..."
+
+# Stop Dante Gateway
+systemctl stop dep
+
+# Additional configuration if needed
+%{ if audio_settings != null }
+cd /opt/dep/dante_package/dante_data/capability/
+jq ".audio.txChannels = ${audio_settings.txChannels} | .audio.rxChannels = ${audio_settings.rxChannels}" dante.json | sponge dante.json
+jq ".audio.txLatencyUs = ${audio_settings.txLatencyUs} | .audio.rxLatencyUs = ${audio_settings.rxLatencyUs}" dante.json | sponge dante.json
+cd -
+%{ endif }
+
+# Static DDM reference. Device will appear under "Unmanaged"
+%{ if ddm_address != null }
+declare -A DDM=( ["HOSTNAME"]="${ddm_address.hostname}" ["IP"]="${ddm_address.ip}" ["PORT"]="${ddm_address.port}")
+DDM_CONFIG_PATH=/opt/dep/dante_package/dante_data/config/ddm.conf
+if [[ -n "$${DDM[IP]}" && -n "$${DDM[PORT]}" ]]; then
+  echo -e "type STATIC\naddr $${DDM[IP]}\nport $${DDM[PORT]}" > "$DDM_CONFIG_PATH"
+  if [[ -n "$${DDM[HOSTNAME]}" ]]; then
+    echo "host $${DDM[HOSTNAME]}" >> "$DDM_CONFIG_PATH"
+  fi
+else
+  echo "[Error] The IP and port must be set for static DDM reference."
+  exit 1;
+fi
+%{ endif }
+
+log_msg "Starting DGW ..."
+
+# Start Dante Gateway
+systemctl start dep
+
+log_msg "Done"
+

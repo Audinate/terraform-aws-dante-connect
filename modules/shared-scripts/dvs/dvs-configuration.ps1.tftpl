@@ -1,0 +1,32 @@
+# Copyright © 2023 Audinate Pty Ltd ACN 120 828 006 (Audinate). All rights reserved.
+
+Write-Output "Running DVS Configuration User Data Script"
+
+# Build command arguments
+$argumentList = @()
+$argumentList += @("-DVSLicense", "${dvs_license}")
+$argumentList += @("-AudioDriver", "${audio_driver}")
+$argumentList += @("-ChannelCount", "${channel_count}")
+$argumentList += @("-Latency", "${latency}")
+
+%{ if licenseServerApiKey != null && licenseServerHostname != null }
+# add licenseServerApiKey and licenseServerHostname arguments
+$argumentList += @("-LicenseServerApiKey", "${licenseServerApiKey}")
+$argumentList += @("-LicenseServerHostname", "${licenseServerHostname}")
+%{ endif }
+
+%{ if ddm_address != null }
+# add DDM address arguments
+$argumentList += @("-DDMAddress", "@{Hostname='${ddm_address.hostname}';Ip='${ddm_address.ip}';Port='${ddm_address.port}'}")
+%{ endif }
+
+Write-Output "Config command args: $argumentList"
+
+# Run config script
+try {
+    Invoke-Expression "& `"C:\ProgramData\Audinate\Dante Virtual Soundcard\dvs_config.ps1`" $argumentList"
+    Write-Output "Running DVS Configuration User Data Script Done!"
+} catch {
+    Write-Error "Running DVS Configuration User Data Script Failed!"
+    Write-Error $_
+}

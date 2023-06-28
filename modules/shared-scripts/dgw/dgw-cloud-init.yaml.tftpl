@@ -1,0 +1,20 @@
+#cloud-config
+write_files:
+%{ if dgw_installation != null ~}
+  - path: "/run/dgw-cloud-init/dgw-setup.sh"
+    permissions: "0755"
+    content: |
+      ${indent(6, dgw_installation.script)}
+%{ endif ~}
+  - path: "/run/dgw-cloud-init/dgw-configuration.sh"
+    permissions: "0755"
+    content: |
+      ${indent(6, dgw_configuration_script)}
+runcmd:
+%{ if dgw_installation != null ~}
+  - "export DGW_VERSION=${dgw_installation.version}"
+  - "export DGW_RESOURCE_URL=${dgw_installation.url}"
+  - "/run/dgw-cloud-init/dgw-setup.sh"
+%{ endif ~}
+  - "/run/dgw-cloud-init/dgw-configuration.sh"
+  - "rm -rf /run/dgw-cloud-init"

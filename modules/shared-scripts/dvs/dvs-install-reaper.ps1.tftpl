@@ -1,0 +1,7 @@
+# Copyright © 2023 Audinate Pty Ltd ACN 120 828 006 (Audinate). All rights reserved.
+
+# Additional tools for testing if needed
+%{ if install_reaper }
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+choco install reaper
+%{ endif }
