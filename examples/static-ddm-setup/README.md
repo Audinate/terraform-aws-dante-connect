@@ -42,7 +42,7 @@ Note that this example may create resources which cost money. Run `terraform des
 | <a name="input_region"></a> [region](#input\_region) | The region to create the instances in | `string` | n/a | yes |
 | <a name="input_ddm_hostname"></a> [ddm\_hostname](#input\_ddm\_hostname) | (Optional) The hostname of the DDM. Used to contact the DDM if IP changes | `string` | n/a | no |
 | <a name="input_ddm_ip"></a> [ddm\_ddm\_ip](#input\_ddm\_ip) | The private IPv4 of the DDM | `string` | n/a | yes |
-| <a name="input_ddm_port"></a> [ddm\_port](#input\_ddm\_port) | The port of the DDM used for device communication | `string` | n/a | yes |
+| <a name="input_ddm_port"></a> [ddm\_port](#input\_ddm\_port) | The port of the DDM used for device communication. Only necessary if the DDM has been reconfigured to use a port other than 8000 for device communication. | `string` | n/a | no |
 
 
 <!-- END_TF_DOCS -->

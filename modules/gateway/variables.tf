@@ -42,13 +42,13 @@ variable "ddm_address" {
   type = object({
     hostname = optional(string, "")
     ip       = string
-    port     = string
+    port     = optional(string, "8000")
   })
   nullable    = true
   default     = null
   description = <<-EOT
     (Optionally) Must be provided in case DDM DNS Discovery is not set-up.
-    If provided, the ip and port are required, the hostname is optional.
+    If provided, the ip is required, the port defaults to 8000 and the hostname is optional.
     If the hostname is provided, it will be used by supported Dante devices to contact the DDM in case of IP change.
     ddm_address = {
       hostname = "The hostname of the DDM"

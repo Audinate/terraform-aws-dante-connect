@@ -25,7 +25,7 @@ Here's an example how to use the `count` meta-argument to create two instances o
 
 ```hcl
 module "dvs" {
-  source = "terraform-audinate-modules/terraform-aws-dante-connect//modules/virtual-soundcard"
+  source = "github.com/Audinate/terraform-aws-dante-connect//modules/virtual-soundcard"
   count  = 2
 
   environment = "test"
@@ -39,7 +39,7 @@ either remove the module block from your `main.tf` file or set the count to zero
 
 ```hcl
 module "dvs" {
-  source = "terraform-audinate-modules/terraform-aws-dante-connect//modules/virtual-soundcard"
+  source = "github.com/Audinate/terraform-aws-dante-connect//modules/virtual-soundcard"
   count  = 0
 
   environment = "test"

@@ -56,6 +56,8 @@ variable "ddm_ip" {
 }
 
 variable "ddm_port" {
-  description = "The port of the DDM used for device communication"
+  description = "(Optional) The port of the DDM used for device communication"
   type        = string
+  default     = null
+  nullable    = true
 }

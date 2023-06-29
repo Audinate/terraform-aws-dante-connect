@@ -12,39 +12,38 @@ Creates an instance with a fresh installation of the Dante Gateway.
 
 ```hcl
 module "dgw" {
-  source        = "terraform-audinate-modules/terraform-aws-dante-connect//modules/gateway"
+  source        = "github.com/Audinate/terraform-aws-dante-connect//modules/gateway"
   environment   = "test"
   subnet_id     = "subnet-01234567890abcdef"
   vpc_id        = "vpc-01234567890abcdef"
 }
 ```
 
-### DGW with static DDM addressing by IP and port
+### DGW with static DDM addressing by IP
 
-Creates an instance of the Dante Gateway which references the Dante Domain Manager by IP and port.
+Creates an instance of the Dante Gateway which references the Dante Domain Manager by IP.
 Static addressing must be configured in case the DDM discovery is not set up.
 
 ```hcl
 module "dgw" {
-  source      = "terraform-audinate-modules/terraform-aws-dante-connect//modules/gateway"
+  source      = "github.com/Audinate/terraform-aws-dante-connect//modules/gateway"
   environment = "test"
   subnet_id   = "subnet-01234567890abcdef"
   vpc_id      = "vpc-01234567890abcdef"
   ddm_address = {
     ip   = "10.0.1.123"
-    port = "8000"
   }
 }
 ```
 
 ### DGW with static DDM addressing by hostname and port
 
-Creates an instance of the Dante Gateway which references the Dante Domain Manager by hostname and port.
+Creates an instance of the Dante Gateway which references the Dante Domain Manager by hostname and port. DDM uses port 8000 by default, but if it has been reconfigured you will need to provide a different port number here.
 Static addressing must be configured in case the DDM discovery is not set up.
 
 ```hcl
 module "dgw" {
-  source      = "terraform-audinate-modules/terraform-aws-dante-connect//modules/gateway"
+  source      = "github.com/Audinate/terraform-aws-dante-connect//modules/gateway"
   environment = "test"
   subnet_id   = "subnet-01234567890abcdef"
   vpc_id      = "vpc-01234567890abcdef"
@@ -62,7 +61,7 @@ Creates an instance of the Dante Gateway which auto-enrolls in the provided Dant
 
 ```hcl
 module "dgw" {
-  source            = "terraform-audinate-modules/terraform-aws-dante-connect//modules/gateway"
+  source            = "github.com/Audinate/terraform-aws-dante-connect//modules/gateway"
   environment       = "test"
   subnet_id         = "subnet-01234567890abcdef"
   vpc_id            = "vpc-01234567890abcdef"
@@ -80,7 +79,7 @@ Creates an instance of the Dante Gateway with customised audio settings.
 
 ```hcl
 module "dgw" {
-  source         = "terraform-audinate-modules/terraform-aws-dante-connect//modules/gateway"
+  source         = "github.com/Audinate/terraform-aws-dante-connect//modules/gateway"
   environment    = "test"
   subnet_id      = "subnet-01234567890abcdef"
   vpc_id         = "vpc-01234567890abcdef"
@@ -113,7 +112,6 @@ module "dgw" {
 |------|------|
 | [aws_security_group.dgw_sg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [random_id.random](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
-| [aws_ami.dgw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_ami.ubuntu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [cloudinit_config.user_data](https://registry.terraform.io/providers/hashicorp/cloudinit/latest/docs/data-sources/config) | data source |
 
@@ -123,7 +121,7 @@ module "dgw" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_associate_public_ip_address"></a> [associate\_public\_ip\_address](#input\_associate\_public\_ip\_address) | (Optionally) True when the instance must be associated with a public IP address | `bool` | `true` | no |
 | <a name="input_audio_settings"></a> [audio\_settings](#input\_audio\_settings) | (Optionally) the audio settings in the following format:<br>audio\_settings = {<br>  txChannels  = "The number of TX channels"<br>  rxChannels  = "The number of RX channels"<br>  txLatencyUs = "Asymmetric latency for TX in microseconds"<br>  rxLatencyUs = "Asymmetric latency for RX in microseconds"<br>} | <pre>object({<br>    txChannels  = number<br>    rxChannels  = number<br>    txLatencyUs = number<br>    rxLatencyUs = number<br>  })</pre> | `null` | no |
-| <a name="input_ddm_address"></a> [ddm\_address](#input\_ddm\_address) | (Optionally) Must be provided in case DDM DNS Discovery is not set-up.<br>If provided, the ip and port are required, the hostname is optional.<br>If the hostname is provided, it will be used by supported Dante devices to contact the DDM in case of IP change.<br>ddm\_address = {<br>  hostname = "The hostname of the DDM"<br>  ip    = "The IPv4 of the DDM"<br>  port  = "The port of the DDM"<br>} | <pre>object({<br>    hostname = optional(string, "")<br>    ip       = string<br>    port     = string<br>  })</pre> | `null` | no |
+| <a name="input_ddm_address"></a> [ddm\_address](#input\_ddm\_address) | (Optionally) Must be provided in case DDM DNS Discovery is not set-up.<br>If provided, the ip is required, the port defaults to 8000 and the hostname is optional.<br>If the hostname is provided, it will be used by supported Dante devices to contact the DDM in case of IP change.<br>ddm\_address = {<br>  hostname = "The hostname of the DDM"<br>  ip    = "The IPv4 of the DDM"<br>  port  = "The port of the DDM"<br>} | <pre>object({<br>    hostname = optional(string, "")<br>    ip       = string<br>    port     = optional(string, "8000")<br>  })</pre> | `null` | no |
 | <a name="input_ddm_configuration"></a> [ddm\_configuration](#input\_ddm\_configuration) | (Optionally) When the DDM configuration is passed, the created node will automatically be enrolled into the dante domain<br>and configured for unicast clocking<br>ddm\_configuration = {<br>  api\_key      = "The API key to use while performing the configuration"<br>  api\_host     = "The full name (including protocol, host, port and path) of the location of DDM API"<br>  dante\_domain = "The dante domain to use, must be pre-provisioned"<br>} | <pre>object({<br>    api_key      = string<br>    api_host     = string<br>    dante_domain = string<br>  })</pre> | `null` | no |
 | <a name="input_dgw_version"></a> [dgw\_version](#input\_dgw\_version) | (Optionally) The version of the DGW to be installed| `string` | `"1.0.0.2"` | no |
 | <a name="input_entitlement_id"></a> [entitlement\_id](#input\_entitlement\_id) | n/a | `string` | `null` | no |
