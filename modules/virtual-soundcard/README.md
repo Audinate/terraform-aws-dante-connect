@@ -151,5 +151,8 @@ module "dvs" {
 
 ## Outputs
 
-No outputs.
+| Name | Description | Type |
+|------|-------------|------|
+| <a name="dvs_private_ip"></a> [dvs\_private\_ip](#dvs\_private\_ip) | `string` | The private IP address of the Dante Virtual Soundcard instance created by this module |
+| <a name="dvs_instance_name"></a> [dvs\_instance\_name](#dvs\_instance\_name) | `string` | The name of the EC2 instance that the Dante Virtual Soundcard is running on |
 <!-- END_TF_DOCS -->

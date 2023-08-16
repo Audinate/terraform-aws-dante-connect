@@ -136,5 +136,8 @@ module "dgw" {
 
 ## Outputs
 
-No outputs.
+| Name | Description | Type |
+|------|-------------|------|
+| <a name="dgw_private_ip"></a> [dgw\_private\_ip](#dgw\_private\_ip) | `string` | The private IP address of the Dante Gateway instance created by this module |
+| <a name="dgw_instance_name"></a> [dgw\_instance\_name](#dgw\_instance\_name) | `string` | The name of the EC2 instance that the Dante Gateway is running on |
 <!-- END_TF_DOCS -->
