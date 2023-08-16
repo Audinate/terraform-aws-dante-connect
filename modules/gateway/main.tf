@@ -9,11 +9,23 @@
 #
 locals {
   component_name_abbreviation = "dgw"
+  license_keys = {
+    "64"  = "VOHCA-43JSH-SQOW7-LQPDP-QKOOV"
+    "256" = "BXS6K-R7UIL-T3UV5-XAJBZ-6TE6L"
+  }
+  license_counts         = [for count in keys(local.license_keys) : tonumber(count)]
+  has_channel_count      = var.audio_settings == null ? false : var.audio_settings.txChannels != null && var.audio_settings.rxChannels != null
+  channel_count          = local.has_channel_count ? max(var.audio_settings.txChannels, var.audio_settings.rxChannels) : min(local.license_counts...)
+  licensed_channel_count = (var.licensed_channel_count != null) ? var.licensed_channel_count : min([for count in local.license_counts : count if count >= local.channel_count]...)
+  license_key            = (var.license_key != null) ? var.license_key : local.license_keys[local.licensed_channel_count]
+
   dep_setup_vars = {
-    ddm_address                   = var.ddm_address
-    audio_settings                = var.audio_settings
-    license_key                   = var.license_key
-    license_settings              = var.license_settings
+    ddm_address            = var.ddm_address
+    audio_settings         = var.audio_settings
+    license_key            = local.license_key
+    license_server         = var.license_server
+    license_websocket_port = var.license_websocket_port
+    licensed_channel_count = local.licensed_channel_count
   }
   shared_dgw_scripts_path  = "${path.module}/../shared-scripts/dgw"
   dgw_installation_script  = file("${local.shared_dgw_scripts_path}/dgw-setup.sh")
@@ -78,14 +90,14 @@ resource "aws_security_group" "dgw_sg" {
     from_port   = 319
     protocol    = "tcp"
     to_port     = 320
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/16", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   }
 
   ingress {
     from_port   = 14336
     protocol    = "udp"
     to_port     = 14591
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/16", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   }
 
   ingress {
@@ -99,21 +111,21 @@ resource "aws_security_group" "dgw_sg" {
     from_port   = 8700
     protocol    = "udp"
     to_port     = 8899
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/16", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   }
 
   ingress {
     from_port   = 4440
     protocol    = "udp"
     to_port     = 4455
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/16", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   }
 
   ingress {
     from_port   = 38700
     protocol    = "udp"
     to_port     = 38900
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/16", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   }
 
   ingress {

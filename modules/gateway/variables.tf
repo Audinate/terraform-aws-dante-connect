@@ -8,14 +8,14 @@
 #
 #
 variable "instance_type" {
-  description = "(Optionally) Instance type to use for the DGW instance. Updates to this field will trigger a stop/start of the instance"
+  description = "(Optional) Instance type to use for the DGW instance. Updates to this field will trigger a stop/start of the instance"
   type        = string
   default     = "m5.large"
   nullable    = false
 }
 
 variable "vpc_security_group_ids" {
-  description = "(Optionally) List of security group IDs the DGW instance will be associated with"
+  description = "(Optional) List of security group IDs the DGW instance will be associated with"
   type        = list(string)
   default     = null
   nullable    = true
@@ -32,7 +32,7 @@ variable "vpc_id" {
 }
 
 variable "key_name" {
-  description = "(Optionally) Name of the key pair to use to connect to the instance"
+  description = "(Optional) Name of the key pair to use to connect to the instance"
   type        = string
   default     = null
   nullable    = true
@@ -47,7 +47,7 @@ variable "ddm_address" {
   nullable    = true
   default     = null
   description = <<-EOT
-    (Optionally) Must be provided in case DDM DNS Discovery is not set-up.
+    (Optional) Must be provided in case DDM DNS Discovery is not set-up.
     If provided, the ip is required, the port defaults to 8000 and the hostname is optional.
     If the hostname is provided, it will be used by supported Dante devices to contact the DDM in case of IP change.
     ddm_address = {
@@ -71,7 +71,7 @@ variable "ddm_configuration" {
   nullable    = true
   default     = null
   description = <<-EOT
-    (Optionally) When the DDM configuration is passed, the created node will automatically be enrolled into the dante domain
+    (Optional) When the DDM configuration is passed, the created node will automatically be enrolled into the dante domain
     and configured for unicast clocking
     ddm_configuration = {
       api_key      = "The API key to use while performing the configuration"
@@ -91,7 +91,7 @@ variable "audio_settings" {
   default     = null
   nullable    = true
   description = <<-EOT
-    (Optionally) the audio settings in the following format:
+    (Optional) the audio settings in the following format:
     audio_settings = {
       txChannels  = "The number of TX channels"
       rxChannels  = "The number of RX channels"
@@ -102,7 +102,7 @@ variable "audio_settings" {
 }
 
 variable "volume_size" {
-  description = "(Optionally) Size of the volume in gibibytes (GiB)"
+  description = "(Optional) Size of the volume in gibibytes (GiB)"
   type        = number
   default     = null
 }
@@ -115,17 +115,19 @@ variable "environment" {
 variable "dgw_version" {
   description = "The version of the DGW to be installed"
   type        = string
-  default     = "1.0.0.2"
+  nullable    = false
+  default     = "1.0.1.3"
 }
 
-variable "dgw_resource_url" {
+variable "resource_url" {
   description = "The url to download a DGW installer"
   type        = string
+  nullable    = false
   default     = "https://soda-dante-connect.s3.ap-southeast-2.amazonaws.com/dgw"
 }
 
 variable "associate_public_ip_address" {
-  description = "(Optionally) True when the instance must be associated with a public IP address"
+  description = "(Optional) True when the instance must be associated with a public IP address"
   type        = bool
   default     = true
 }
@@ -135,33 +137,42 @@ variable "license_key" {
   type        = string
   sensitive   = true
   nullable    = true
-  default     = "VOHCA-43JSH-SQOW7-LQPDP-QKOOV"
+  default     = null
 }
 
-variable "license_settings" {
+variable "license_server" {
   type = object({
     hostname = string
-    api_key = string
-    websocket_port = number
+    api_key  = string
   })
-  nullable    = true
+  nullable = false
   default = {
-    hostname       = "https://software-license-danteconnect.svc.audinate.com"
-    api_key        = "638hPLfZd3nvZ4tXP"
-    websocket_port = 49999
+    hostname = "https://software-license-danteconnect.svc.audinate.com"
+    api_key  = "638hPLfZd3nvZ4tXP"
   }
   description = <<-EOT
-    (Optionally) License settings
-    "license_settings" = {
+    (Optional) License settings
+    "license_server" = {
       hostname      = "License server hostname"
       api_key     = "License server api key"
-      websocket_port = "License websocket port number"
     }
   EOT
 }
 
-variable "entitlement_id" {
-  type     = string
-  default  = null
-  nullable = true
+variable "license_websocket_port" {
+  description = "License websocket port number"
+  type        = number
+  nullable    = false
+  default     = 49999
+}
+
+variable "licensed_channel_count" {
+  description = "(Optional) The number of licensed channels"
+  type        = number
+  default     = null
+  nullable    = true
+  validation {
+    condition     = var.licensed_channel_count != null ? contains([64, 256], var.licensed_channel_count) : true
+    error_message = "Invalid DGW licensed channel count. Valid values = [64, 256]"
+  }
 }

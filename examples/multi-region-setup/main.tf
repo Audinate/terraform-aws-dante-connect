@@ -19,7 +19,6 @@ module "dvs_256_region_1" {
   subnet_id   = var.subnet_id_1
   vpc_id      = var.vpc_id_1
   dvs_version = var.dvs_version
-  license_key = var.dvs_256_license_key
 
   channel_count = 256
   latency       = 10
@@ -36,7 +35,6 @@ module "dvs_64_region_1" {
   subnet_id   = var.subnet_id_1
   vpc_id      = var.vpc_id_1
   dvs_version = var.dvs_version
-  license_key = var.dvs_64_license_key
 
   channel_count = 64
   latency       = 10
@@ -79,7 +77,6 @@ module "dvs_256_region_2" {
   subnet_id   = var.subnet_id_2
   vpc_id      = var.vpc_id_2
   dvs_version = var.dvs_version
-  license_key = var.dvs_256_license_key
 
   channel_count = 256
   latency       = 20
@@ -96,7 +93,6 @@ module "dvs_64_region_2" {
   subnet_id   = var.subnet_id_2
   vpc_id      = var.vpc_id_2
   dvs_version = var.dvs_version
-  license_key = var.dvs_64_license_key
 
   channel_count = 64
   latency       = 20
@@ -115,8 +111,8 @@ module "dgw_region_2" {
   dgw_version = var.dgw_version
 
   audio_settings = {
-    txChannels  = 64
-    rxChannels  = 64
+    txChannels  = 256
+    rxChannels  = 256
     txLatencyUs = 10000
     rxLatencyUs = 100000
   }

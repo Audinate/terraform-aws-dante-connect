@@ -48,7 +48,7 @@ data "cloudinit_config" "user_data" {
       dgw_installation = {
         script  = local.dgw_installation_script
         version = var.dgw_version
-        url = var.dgw_resource_url
+        url     = var.resource_url
       }
       dgw_configuration_script = local.dgw_configuration_script
     })

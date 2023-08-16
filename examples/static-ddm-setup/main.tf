@@ -7,45 +7,43 @@ locals {
 }
 
 module "dvs_256" {
-  count = 1
+  count       = 1
   source      = "../../modules/virtual-soundcard"
   environment = local.environment
   subnet_id   = var.subnet_id
   vpc_id      = var.vpc_id
   dvs_version = var.dvs_version
-  license_key = var.dvs_256_license_key
 
   channel_count = 256
   latency       = 20
 
   ddm_address = {
     hostname = var.ddm_hostname
-    ip   = var.ddm_ip
-    port = var.ddm_port
+    ip       = var.ddm_ip
+    port     = var.ddm_port
   }
 }
 
 module "dvs_64" {
-  count = 1
+  count       = 1
   source      = "../../modules/virtual-soundcard"
   environment = local.environment
   subnet_id   = var.subnet_id
   vpc_id      = var.vpc_id
   dvs_version = var.dvs_version
-  license_key = var.dvs_64_license_key
 
   channel_count = 64
   latency       = 10
 
   ddm_address = {
     hostname = var.ddm_hostname
-    ip   = var.ddm_ip
-    port = var.ddm_port
+    ip       = var.ddm_ip
+    port     = var.ddm_port
   }
 }
 
 module "dgw" {
-  count = 1
+  count       = 1
   source      = "../../modules/gateway"
   environment = local.environment
   subnet_id   = var.subnet_id
@@ -61,7 +59,7 @@ module "dgw" {
 
   ddm_address = {
     hostname = var.ddm_hostname
-    ip   = var.ddm_ip
-    port = var.ddm_port
+    ip       = var.ddm_ip
+    port     = var.ddm_port
   }
 }

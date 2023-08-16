@@ -13,7 +13,6 @@ module "dvs_256" {
   subnet_id   = var.subnet_id
   vpc_id      = var.vpc_id
   dvs_version = var.dvs_version
-  license_key = var.dvs_256_license_key
 
   channel_count = 256
   latency       = 20
@@ -32,7 +31,6 @@ module "dvs_64" {
   subnet_id   = var.subnet_id
   vpc_id      = var.vpc_id
   dvs_version = var.dvs_version
-  license_key = var.dvs_64_license_key
 
   channel_count = 64
   latency       = 10

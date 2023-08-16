@@ -10,20 +10,29 @@
 
 locals {
   component_name_abbreviation = "dvs"
-  instance_type               = var.instance_type == null && var.channel_count <= 64 ? "m5.large" : "m5.2xlarge"
+  license_keys = {
+    "64"  = "6PDZW-HAT54-QMS7B-4SEB7-SOOYS"
+    "256" = "NISBH-ZQG2O-KAKHZ-XHYWZ-IA32H"
+  }
+  license_counts         = [for count in keys(local.license_keys) : tonumber(count)]
+  channel_count          = (var.channel_count != null) ? var.channel_count : min(local.license_counts...)
+  licensed_channel_count = (var.licensed_channel_count != null) ? var.licensed_channel_count : min([for count in local.license_counts : count if count >= local.channel_count]...)
+  license_key            = (var.license_key != null) ? var.license_key : local.license_keys[local.licensed_channel_count]
+
+  instance_type = var.instance_type == null && local.channel_count <= 64 ? "m5.large" : "m5.2xlarge"
   vpc_security_group_ids = (var.vpc_security_group_ids != null) ? var.vpc_security_group_ids : tolist([
     aws_security_group.dvs_sg[0].id
   ])
   shared_dvs_scripts_path = "${path.module}/../shared-scripts/dvs"
   dvs_installation_script = file("${local.shared_dvs_scripts_path}/dvs-installation.ps1")
   dvs_configuration_script = templatefile("${local.shared_dvs_scripts_path}/dvs-configuration.ps1.tftpl", {
-    dvs_license           = var.license_key,
+    dvs_license           = local.license_key,
     ddm_address           = var.ddm_address
     audio_driver          = var.audio_driver,
-    channel_count         = var.channel_count,
+    channel_count         = local.channel_count,
     latency               = var.latency,
-    licenseServerHostname = var.licenseServerConfig != null ? var.licenseServerConfig.licenseServerHostname : null
-    licenseServerApiKey   = var.licenseServerConfig != null ? var.licenseServerConfig.licenseServerApiKey : null
+    licenseServerHostname = var.license_server != null ? var.license_server.hostname : null
+    licenseServerApiKey   = var.license_server != null ? var.license_server.api_key : null
   })
   reaper_installation_script = templatefile("${local.shared_dvs_scripts_path}/dvs-install-reaper.ps1.tftpl", {
     install_reaper = var.install_reaper
@@ -49,7 +58,7 @@ module "dvs" {
   user_data = <<-EOT
     <powershell>
     $Env:DVS_VERSION = "${var.dvs_version}"
-    $Env:DVS_RESOURCE_URL = "${var.dvs_resource_url}"
+    $Env:DVS_RESOURCE_URL = "${var.resource_url}"
     ${local.dvs_installation_script}
     ${local.dvs_configuration_script}
     ${local.reaper_installation_script}
@@ -95,35 +104,35 @@ resource "aws_security_group" "dvs_sg" {
     from_port   = 14336
     protocol    = "udp"
     to_port     = 14591
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/16", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   }
 
   ingress {
     from_port   = 319
     protocol    = "tcp"
     to_port     = 320
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/16", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   }
 
   ingress {
     from_port   = 8700
     protocol    = "udp"
     to_port     = 8899
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/16", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   }
 
   ingress {
     from_port   = 38700
     protocol    = "udp"
     to_port     = 38900
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/16", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   }
 
   ingress {
     from_port   = 4440
     protocol    = "udp"
     to_port     = 4455
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/16", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   }
 
   ingress {
