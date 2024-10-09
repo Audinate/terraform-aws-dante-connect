@@ -6,6 +6,8 @@ This is a collection of submodules that make it easier to create instances of se
 
 * [Dante Gateway](gateway)
 * [Dante Virtual Soundcard](virtual-soundcard)
+* [Remote Monitor](remote-monitor)
+* [Remote Contributor](remote-contributor)
 
 ## Features
 

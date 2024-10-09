@@ -88,7 +88,7 @@ resource "aws_security_group" "dgw_sg" {
 
   ingress {
     from_port   = 319
-    protocol    = "tcp"
+    protocol    = "udp"
     to_port     = 320
     cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   }

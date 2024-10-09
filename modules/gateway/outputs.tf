@@ -8,10 +8,10 @@
 #
 #
 output "dgw_private_ip" {
-  value = module.dgw[0].ec2_instance_private_ip
+  value       = module.dgw[0].ec2_instance_private_ip
   description = "Private IP of the Dante Gateway instance"
 }
 output "dgw_instance_name" {
-  value = module.dgw[0].ec2_instance_name
+  value       = module.dgw[0].ec2_instance_name
   description = "Name of Dante Gateway EC2 instance"
 }

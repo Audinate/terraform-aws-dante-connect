@@ -1,0 +1,38 @@
+#!/bin/bash
+# Copyright 2024 Audinate Pty Ltd ACN 120 828 006 (Audinate). All rights reserved.
+# Script for deploying Remote Monitor/Contributor in AWS (on an Ubuntu 22.04 Server Image)
+set -euxo pipefail
+
+log_msg()
+{
+    echo "${identifiers.product_name}-Install: $1" >> /var/log/${identifiers.service_name}-setup.log
+}
+
+log_msg "Installing required packages ..."
+apt-get update
+apt-get install -y ca-certificates curl gnupg jq net-tools
+
+log_msg "Installing nodejs ..."
+mkdir -p /etc/apt/keyrings
+curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+apt-get update
+apt-get install nodejs -y
+
+INSTALLER="${identifiers.service_name}_${installer_version}_x86_64_Linux.deb"
+
+log_msg "Downloading the ${identifiers.product_name} installer from ${resource_url}/$${INSTALLER} ..."
+
+# Download the Bridge package
+wget "${resource_url}/$${INSTALLER}" -P /opt
+
+log_msg "Installing ${identifiers.product_name} .."
+
+# Install the package
+apt-get install "/opt/$${INSTALLER}" -y
+
+# Cleanup
+apt-get clean
+rm -rf "/opt/$${INSTALLER}"
+
+log_msg "Done"

@@ -4,6 +4,8 @@ A collection of Terraform modules to create instances of selected Dante Connect 
 
 * [Dante Gateway](modules/gateway)
 * [Dante Virtual Soundcard](modules/virtual-soundcard)
+* [Remote Monitor](modules/remote-monitor)
+* [Remote Contributor](modules/remote-contributor)
 
 ## Examples
 
@@ -28,7 +30,7 @@ Please use the [issue tracker](https://github.com/Audinate/terraform-aws-dante-c
 Support enquiries may be lodged via the Audinate website https://www.audinate.com/contact/support or via email to support@audinate.com.
 
 ## Copyright
-Copyright © 2023 Audinate Pty Ltd and/or its licensors
+Copyright © 2024 Audinate Pty Ltd and/or its licensors
 
 ## License
 [Mozilla Public License v2.0](./LICENSE)

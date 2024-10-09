@@ -47,7 +47,7 @@ data "cloudinit_config" "user_data" {
     content = templatefile("${local.shared_dgw_scripts_path}/dgw-cloud-init.yaml.tftpl", {
       dgw_installation = {
         script  = local.dgw_installation_script
-        version = var.dgw_version
+        version = var.dgw_version != null ? var.dgw_version : var.installer_version
         url     = var.resource_url
       }
       dgw_configuration_script = local.dgw_configuration_script

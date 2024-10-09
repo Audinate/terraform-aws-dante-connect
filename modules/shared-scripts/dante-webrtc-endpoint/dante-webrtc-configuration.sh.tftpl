@@ -1,0 +1,137 @@
+#!/bin/bash
+# Copyright 2024 Audinate Pty Ltd ACN 120 828 006 (Audinate). All rights reserved.
+# Example script for Configuring Remote Monitor/Contributor in AWS (on an Ubuntu 22.04 Server Image) using the User Data field
+
+log_msg()
+{
+    echo "${identifiers.product_name}Configuration: $1" >> /var/log/${identifiers.service_name}-configuraton.log
+}
+
+log_msg "Starting ..."
+
+start_service()
+{
+    systemctl start ${identifiers.service_name}
+}
+
+stop_service()
+{
+    systemctl stop ${identifiers.service_name}
+}
+
+restart_service()
+{
+    systemctl restart ${identifiers.service_name}
+}
+
+# Stop Remote Bridge
+log_msg "Stopping ${identifiers.product_name} ..."
+stop_service
+
+# Configure the NIC
+ETH=`ip --json -family inet route show to 0/0 | jq --raw-output '.[0].dev'`
+jq ".network.interfaces = [ \"$ETH\" ]" dante.json | sponge dante.json
+
+# Additional configuration if needed
+%{ if audio_settings != null }
+cd /opt/dep/dante_package/dante_data/capability/
+jq ".audio.txChannels = ${audio_settings.txChannels} | .audio.rxChannels = ${audio_settings.rxChannels}" dante.json | sponge dante.json
+jq ".audio.rxLatencyUs = ${audio_settings.rxLatencyUs}" dante.json | sponge dante.json
+%{ if audio_settings.txLatencyUs != null }
+jq ".audio.txLatencyUs = ${audio_settings.txLatencyUs}" dante.json | sponge dante.json
+%{ endif }
+cd -
+%{ endif }
+
+# Static DDM reference. Device will appear under "Unmanaged"
+%{ if ddm_address != null }
+declare -A DDM=( ["HOSTNAME"]="${ddm_address.hostname}" ["IP"]="${ddm_address.ip}" ["PORT"]="${ddm_address.port}")
+DDM_CONFIG_PATH=/opt/dep/dante_package/dante_data/config/ddm.conf
+if [[ -n "$${DDM[IP]}" && -n "$${DDM[PORT]}" ]]; then
+  echo -e "type STATIC\naddr $${DDM[IP]}\nport $${DDM[PORT]}" > "$DDM_CONFIG_PATH"
+  if [[ -n "$${DDM[HOSTNAME]}" ]]; then
+    echo "host $${DDM[HOSTNAME]}" >> "$DDM_CONFIG_PATH"
+  fi
+else
+  echo "[Error] The IP and port must be set for static DDM reference."
+  exit 1;
+fi
+%{ endif }
+
+# Stun server configuration
+%{ if stun_server_config != null }
+sed -i -e  "s/stun.l.google.com:19302/${stun_server_config}/g" /opt/bridge/config/webrtc-bridge.ini
+%{ endif }
+
+# Turn server configuration
+%{ if turn_server_config != null }
+
+for i in ${turn_server_config}
+do
+  config+="$i\n"
+done
+sed -i -e  "s/; <turn_server_config>/$config/g" /opt/bridge/config/webrtc-bridge.ini
+%{ endif }
+
+# Web admin account configuration
+%{ if web_admin_account != null }
+ACCOUNTS_FILE=/opt/bridge/graphql-server/accounts.json
+JWT_SECRET=$(date +%s | md5sum | base64 | head -c 32)
+cat << EOF > $ACCOUNTS_FILE
+{
+  "JWT_SECRET": "$JWT_SECRET",
+  "users": [
+    {
+      "email": "${web_admin_account.email}",
+      "password": "${web_admin_account.password}"
+    }
+  ]
+}
+EOF
+%{ endif }
+
+log_msg "Starting ${identifiers.product_name} ..."
+# Start Bridge service
+start_service
+
+while true; do
+    dep_manager=$(pgrep dep_manager 2> /dev/null)
+    if [ -n "$dep_manager" ]; then
+        log_msg "${identifiers.product_name} is ready for activation"
+        break
+    fi
+    log_msg "${identifiers.product_name} is not ready ..."
+    sleep 1
+done
+
+# Give some time for DEP to be ready for activation
+sleep 3
+
+%{ if license_key != null }
+ACTIVATION_OPTS=" --e=${license_key} "
+    %{ if license_websocket_port != null }
+        ACTIVATION_OPTS+=" --w=${license_websocket_port} "
+    %{ else }
+        ACTIVATION_OPTS+=" --w=49999 "
+    %{ endif }
+
+    %{ if license_server != null }
+        %{ if license_server.hostname != null }
+            ACTIVATION_OPTS+=" --s=${license_server.hostname} "
+        %{ endif }
+
+        %{ if license_server.api_key != null }
+            ACTIVATION_OPTS+=" --k=${license_server.api_key} "
+        %{ endif }
+    %{ endif }
+    log_msg "Running /opt/dep/apps/dante_activator activate $ACTIVATION_OPTS"
+    /opt/dep/apps/dante_activator activate $ACTIVATION_OPTS >> /var/log/${identifiers.service_name}-configuraton.log
+%{ else }
+    log_msg "No license key available to activate ${identifiers.product_name}"
+%{ endif }
+
+log_msg "Restarting ${identifiers.product_name} after activation ..."
+
+restart_service
+
+log_msg "Done"

@@ -30,19 +30,23 @@ Note that this example may create resources which cost money. Run `terraform des
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_dvs"></a> [dvs](#module\_dvs) | ../../modules/virtual-soundcard | n/a |
-| <a name="module_dgw"></a> [dgw](#module\_gateway) | ../../modules/gateway | n/a |
-
+| <a name="module_dgw_region_1"></a> [dgw\_region\_1](#module\_dgw\_region\_1) | ../../modules/gateway | n/a |
+| <a name="module_dgw_region_2"></a> [dgw\_region\_2](#module\_dgw\_region\_2) | ../../modules/gateway | n/a |
+| <a name="module_dvs_256_region_1"></a> [dvs\_256\_region\_1](#module\_dvs\_256\_region\_1) | ../../modules/virtual-soundcard | n/a |
+| <a name="module_dvs_256_region_2"></a> [dvs\_256\_region\_2](#module\_dvs\_256\_region\_2) | ../../modules/virtual-soundcard | n/a |
+| <a name="module_dvs_64_region_1"></a> [dvs\_64\_region\_1](#module\_dvs\_64\_region\_1) | ../../modules/virtual-soundcard | n/a |
+| <a name="module_dvs_64_region_2"></a> [dvs\_64\_region\_2](#module\_dvs\_64\_region\_2) | ../../modules/virtual-soundcard | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_vpc_id_1"></a> [vpc\_id\_1](#input\_vpc\_id\_1) | The VPC in region 1 the instances will be created in | `string` | n/a | yes |
-| <a name="input_subnet_id_1"></a> [subnet\_id\_1](#input\_subnet\_id\_1) | The Subnet in region 1 the instances will be launched in | `string` | n/a | yes |
-| <a name="input_region_1"></a> [region\_1](#input\_region\_1) | The first region to create instances in | `string` | n/a | yes |
-| <a name="input_vpc_id_2"></a> [vpc\_id\_2](#input\_vpc\_id\_2) | The VPC in region 2 the instances will be created in | `string` | n/a | yes |
-| <a name="input_subnet_id_2"></a> [subnet\_id\_2](#input\_subnet\_id\_2) | The Subnet in region 2 the instances will be launched in | `string` | n/a | yes |
-| <a name="input_region_2"></a> [region\_2](#input\_region\_2) | The second region to create instances in | `string` | n/a | yes |
-
+| <a name="input_dgw_version"></a> [dgw\_version](#input\_dgw\_version) | (Optional) The version of Dante Gateway to be installed | `string` | `null` | no |
+| <a name="input_dvs_version"></a> [dvs\_version](#input\_dvs\_version) | (Optional) The version of DVS to be installed | `string` | `null` | no |
+| <a name="input_region_1"></a> [region\_1](#input\_region\_1) | The first region the instances will be created in | `string` | n/a | yes |
+| <a name="input_region_2"></a> [region\_2](#input\_region\_2) | The second region the instances will be created in | `string` | n/a | yes |
+| <a name="input_subnet_id_1"></a> [subnet\_id\_1](#input\_subnet\_id\_1) | The VPC Subnet ID in region 1 the instances will be launched in | `string` | n/a | yes |
+| <a name="input_subnet_id_2"></a> [subnet\_id\_2](#input\_subnet\_id\_2) | The VPC Subnet ID in region 2 the instances will be launched in | `string` | n/a | yes |
+| <a name="input_vpc_id_1"></a> [vpc\_id\_1](#input\_vpc\_id\_1) | The VPC ID in region 1 the instances will be created in | `string` | n/a | yes |
+| <a name="input_vpc_id_2"></a> [vpc\_id\_2](#input\_vpc\_id\_2) | The VPC ID in region 2 the instances will be created in | `string` | n/a | yes |
 <!-- END_TF_DOCS -->

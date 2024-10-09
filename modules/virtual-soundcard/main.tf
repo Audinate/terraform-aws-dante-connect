@@ -18,8 +18,8 @@ locals {
   channel_count          = (var.channel_count != null) ? var.channel_count : min(local.license_counts...)
   licensed_channel_count = (var.licensed_channel_count != null) ? var.licensed_channel_count : min([for count in local.license_counts : count if count >= local.channel_count]...)
   license_key            = (var.license_key != null) ? var.license_key : local.license_keys[local.licensed_channel_count]
-
-  instance_type = var.instance_type == null && local.channel_count <= 64 ? "m5.large" : "m5.2xlarge"
+  installer_version      = var.dvs_version != null ? var.dvs_version : var.installer_version
+  instance_type          = var.instance_type == null && local.channel_count <= 64 ? "m5.large" : "m5.2xlarge"
   vpc_security_group_ids = (var.vpc_security_group_ids != null) ? var.vpc_security_group_ids : tolist([
     aws_security_group.dvs_sg[0].id
   ])
@@ -57,7 +57,7 @@ module "dvs" {
 
   user_data = <<-EOT
     <powershell>
-    $Env:DVS_VERSION = "${var.dvs_version}"
+    $Env:DVS_VERSION = "${local.installer_version}"
     $Env:DVS_RESOURCE_URL = "${var.resource_url}"
     ${local.dvs_installation_script}
     ${local.dvs_configuration_script}
@@ -109,7 +109,7 @@ resource "aws_security_group" "dvs_sg" {
 
   ingress {
     from_port   = 319
-    protocol    = "tcp"
+    protocol    = "udp"
     to_port     = 320
     cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   }

@@ -1,0 +1,18 @@
+#cloud-config
+write_files:
+%{ if dante_webrtc_endpoint_installation != null ~}
+  - path: "/run/dante-webrtc-cloud-init/dante-webrtc-setup.sh"
+    permissions: "0755"
+    content: |
+      ${indent(6, dante_webrtc_endpoint_installation.script)}
+%{ endif ~}
+  - path: "/run/dante-webrtc-cloud-init/dante-webrtc-configuration.sh"
+    permissions: "0755"
+    content: |
+      ${indent(6, dante_webrtc_endpoint_configuration_script)}
+runcmd:
+%{ if dante_webrtc_endpoint_installation != null ~}
+  - "/run/dante-webrtc-cloud-init/dante-webrtc-setup.sh"
+%{ endif ~}
+  - "/run/dante-webrtc-cloud-init/dante-webrtc-configuration.sh"
+  - "rm -rf /run/dante-webrtc-cloud-init"

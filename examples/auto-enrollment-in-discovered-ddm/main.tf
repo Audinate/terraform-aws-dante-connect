@@ -7,12 +7,12 @@ locals {
 }
 
 module "dvs_256" {
-  count       = 1
-  source      = "../../modules/virtual-soundcard"
-  environment = local.environment
-  subnet_id   = var.subnet_id
-  vpc_id      = var.vpc_id
-  dvs_version = var.dvs_version
+  count             = 1
+  source            = "../../modules/virtual-soundcard"
+  environment       = local.environment
+  subnet_id         = var.subnet_id
+  vpc_id            = var.vpc_id
+  installer_version = var.dvs_version
 
   channel_count = 256
   latency       = 20
@@ -25,12 +25,12 @@ module "dvs_256" {
 }
 
 module "dvs_64" {
-  count       = 1
-  source      = "../../modules/virtual-soundcard"
-  environment = local.environment
-  subnet_id   = var.subnet_id
-  vpc_id      = var.vpc_id
-  dvs_version = var.dvs_version
+  count             = 1
+  source            = "../../modules/virtual-soundcard"
+  environment       = local.environment
+  subnet_id         = var.subnet_id
+  vpc_id            = var.vpc_id
+  installer_version = var.dvs_version
 
   channel_count = 64
   latency       = 10
@@ -43,12 +43,12 @@ module "dvs_64" {
 }
 
 module "dgw" {
-  count       = 1
-  source      = "../../modules/gateway"
-  environment = local.environment
-  subnet_id   = var.subnet_id
-  vpc_id      = var.vpc_id
-  dgw_version = var.dgw_version
+  count             = 1
+  source            = "../../modules/gateway"
+  environment       = local.environment
+  subnet_id         = var.subnet_id
+  vpc_id            = var.vpc_id
+  installer_version = var.dgw_version
 
   audio_settings = {
     txChannels  = 64

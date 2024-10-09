@@ -21,6 +21,7 @@ resource "null_resource" "enrollment_script" {
   provisioner "local-exec" {
     working_dir = "${path.module}/../configuration/setup-scripts/"
     command     = "./enroll-device-into-domain.sh \"${self.triggers.dante_domain}\" ${self.triggers.private_ip}"
+    interpreter = ["bash", "-c"]
     environment = {
       API_KEY  = self.triggers.api_key
       API_HOST = self.triggers.api_host
@@ -30,6 +31,7 @@ resource "null_resource" "enrollment_script" {
     when        = destroy
     working_dir = "${path.module}/../configuration/setup-scripts/"
     command     = "./unenroll-device.sh ${self.triggers.private_ip}"
+    interpreter = ["bash", "-c"]
     environment = {
       API_KEY  = self.triggers.api_key
       API_HOST = self.triggers.api_host

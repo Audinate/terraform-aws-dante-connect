@@ -72,7 +72,7 @@ variable "ddm_configuration" {
   default     = null
   description = <<-EOT
     (Optional) When the DDM configuration is passed, the created node will automatically be enrolled into the dante domain
-    and configured for unicast clocking
+    and configured for unicast clocking. This requires the local environment to be Unix or a Linux-like environment on Windows (such as WSL, Cygwin or MinGW)
     ddm_configuration = {
       api_key      = "The API key to use while performing the configuration"
       api_host     = "The full name (including protocol, host, port and path) of the location of DDM API"
@@ -113,6 +113,12 @@ variable "environment" {
 }
 
 variable "dgw_version" {
+  description = "(Deprecated) The version of the DGW to be installed"
+  type        = string
+  default     = null
+}
+
+variable "installer_version" {
   description = "The version of the DGW to be installed"
   type        = string
   nullable    = false

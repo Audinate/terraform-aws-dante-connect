@@ -29,20 +29,20 @@ Note that this example may create resources which cost money. Run `terraform des
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_dvs"></a> [dvs](#module\_dvs) | ../../modules/virtual-soundcard | n/a |
 | <a name="module_dgw"></a> [dgw](#module\_dgw) | ../../modules/gateway | n/a |
-
+| <a name="module_dvs_256"></a> [dvs\_256](#module\_dvs\_256) | ../../modules/virtual-soundcard | n/a |
+| <a name="module_dvs_64"></a> [dvs\_64](#module\_dvs\_64) | ../../modules/virtual-soundcard | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The VPC ID the instances will be created in | `string` | n/a | yes |
+| <a name="input_ddm_hostname"></a> [ddm\_hostname](#input\_ddm\_hostname) | (Optional) The hostname of the DDM | `string` | `null` | no |
+| <a name="input_ddm_ip"></a> [ddm\_ip](#input\_ddm\_ip) | The private IPv4 of the DDM | `string` | n/a | yes |
+| <a name="input_ddm_port"></a> [ddm\_port](#input\_ddm\_port) | (Optional) The port of the DDM used for device communication | `string` | `null` | no |
+| <a name="input_dgw_version"></a> [dgw\_version](#input\_dgw\_version) | (Optional) The version of Dante Gateway to be installed | `string` | `null` | no |
+| <a name="input_dvs_version"></a> [dvs\_version](#input\_dvs\_version) | (Optional) The version of DVS to be installed | `string` | `null` | no |
+| <a name="input_region"></a> [region](#input\_region) | Region the instances will be created in | `string` | n/a | yes |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | The VPC Subnet ID the instances will be launched in | `string` | n/a | yes |
-| <a name="input_region"></a> [region](#input\_region) | The region to create the instances in | `string` | n/a | yes |
-| <a name="input_ddm_hostname"></a> [ddm\_hostname](#input\_ddm\_hostname) | (Optional) The hostname of the DDM. Used to contact the DDM if IP changes | `string` | n/a | no |
-| <a name="input_ddm_ip"></a> [ddm\_ddm\_ip](#input\_ddm\_ip) | The private IPv4 of the DDM | `string` | n/a | yes |
-| <a name="input_ddm_port"></a> [ddm\_port](#input\_ddm\_port) | The port of the DDM used for device communication. Only necessary if the DDM has been reconfigured to use a port other than 8000 for device communication. | `string` | n/a | no |
-
-
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The VPC ID the instances will be created in | `string` | n/a | yes |
 <!-- END_TF_DOCS -->

@@ -33,13 +33,13 @@ variable "region_2" {
 }
 
 variable "dvs_version" {
-  description = "The version of DVS to be installed"
+  description = "(Optional) The version of DVS to be installed"
   type        = string
-  default     = "4.4.0.3"
+  default     = null
 }
 
 variable "dgw_version" {
-  description = "The version of Dante Gateway to be installed"
+  description = "(Optional) The version of Dante Gateway to be installed"
   type        = string
-  default     = "1.0.1.3"
+  default     = null
 }

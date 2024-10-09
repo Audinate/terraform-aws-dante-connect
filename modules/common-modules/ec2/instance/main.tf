@@ -29,6 +29,9 @@ resource "aws_instance" "ec2" {
     volume_size = var.volume_size
   }
   user_data = var.user_data
+  # If the startup script or startup script parameters change, we will need to
+  # recreate the instance, as they are designed to only run on startup
+  user_data_replace_on_change = true
   tags = {
     Name        = var.instance_name
     Environment = var.environment
@@ -67,6 +70,9 @@ resource "aws_instance" "ec2_eip" {
     volume_size = var.volume_size
   }
   user_data = var.user_data
+  # If the startup script or startup script parameters change, we will need to
+  # recreate the instance, as they are designed to only run on startup
+  user_data_replace_on_change = true
   tags = {
     Name        = var.instance_name
     Environment = var.environment

@@ -74,10 +74,18 @@ Write-Output "Start DVS installation Done!"
 .\dvs_cli.exe exit
 Write-Output "Start DVS installer finished!"
 
+# A clean copy of Windows after installation contains only a small number of certificates in the root store.
+# In normal usage, other trusted certificates will be lazily downloaded on demand, but the DVS licenser does not trigger this.
+# We need to manually install the Windows Trusted Root CA certificates to allow the DVS licenser to connect to
+# Audinate servers.
+certutil -generateSSTFromWU $WorkingDir\roots.sst
+Import-Certificate -FilePath $WorkingDir\roots.sst -CertStoreLocation Cert:\LocalMachine\Root
+
 # Delete the downloaded content
 Write-Output "Remove files"
 DeleteFileSafe $WorkingDir\DvsCli.zip
 DeleteFileSafe $WorkingDir\DVS_Installer.exe
+DeleteFileSafe $WorkingDir\roots.sst
 Write-Output "Remove files Done!"
 
 # Create the DVS configuration script
