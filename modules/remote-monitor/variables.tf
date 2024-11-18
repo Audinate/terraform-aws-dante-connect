@@ -111,7 +111,7 @@ variable "installer_version" {
   description = "(Optional) The version of the Remote Monitor to be installed"
   type        = string
   nullable    = false
-  default     = "1.0.0.4"
+  default     = "1.0.1.3"
 }
 
 variable "resource_url" {

@@ -122,7 +122,7 @@ variable "installer_version" {
   description = "The version of the DGW to be installed"
   type        = string
   nullable    = false
-  default     = "1.0.1.3"
+  default     = "1.1.1.1"
 }
 
 variable "resource_url" {
