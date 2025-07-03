@@ -4,7 +4,7 @@
 # Authors :
 # Synopsis:
 #
-# Copyright 2023 Audinate Pty Ltd and/or its licensors
+# Copyright 2023-2025 Audinate Pty Ltd and/or its licensors
 #
 #
 variable "instance_type" {
@@ -129,7 +129,7 @@ variable "resource_url" {
   description = "The url to download a DGW installer"
   type        = string
   nullable    = false
-  default     = "https://soda-dante-connect.s3.ap-southeast-2.amazonaws.com/dgw"
+  default     = "https://audinate-dante-connect.sgp1.cdn.digitaloceanspaces.com/dgw"
 }
 
 variable "associate_public_ip_address" {

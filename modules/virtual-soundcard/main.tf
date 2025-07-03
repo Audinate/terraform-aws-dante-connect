@@ -4,7 +4,7 @@
 # Authors :
 # Synopsis:
 #
-# Copyright 2023 Audinate Pty Ltd and/or its licensors
+# Copyright 2023-2025 Audinate Pty Ltd and/or its licensors
 #
 #
 

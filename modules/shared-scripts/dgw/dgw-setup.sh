@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2023 Audinate Pty Ltd ACN 120 828 006 (Audinate). All rights reserved.
+# Copyright 2023-2025 Audinate Pty Ltd ACN 120 828 006 (Audinate). All rights reserved.
 # Script for installing Dante Gateway (on an Ubuntu 20.04 Server Image)
 # This script requires the DGW_VERSION env variable to be set prior to execution
 set -euxo pipefail

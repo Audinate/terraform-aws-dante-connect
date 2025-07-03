@@ -1,4 +1,4 @@
-<!-- Copyright 2023 Audinate Pty Ltd and/or its licensors -->
+<!-- Copyright 2023-2025 Audinate Pty Ltd and/or its licensors -->
 
 # Dante Gateway
 
@@ -136,7 +136,7 @@ module "dgw" {
 | <a name="input_license_server"></a> [license\_server](#input\_license\_server) | (Optional) License settings<br>"license\_server" = {<br>  hostname      = "License server hostname"<br>  api\_key     = "License server api key"<br>} | <pre>object({<br>    hostname = string<br>    api_key  = string<br>  })</pre> | <pre>{<br>  "api_key": "638hPLfZd3nvZ4tXP",<br>  "hostname": "https://software-license-danteconnect.svc.audinate.com"<br>}</pre> | no |
 | <a name="input_license_websocket_port"></a> [license\_websocket\_port](#input\_license\_websocket\_port) | License websocket port number | `number` | `49999` | no |
 | <a name="input_licensed_channel_count"></a> [licensed\_channel\_count](#input\_licensed\_channel\_count) | (Optional) The number of licensed channels | `number` | `null` | no |
-| <a name="input_resource_url"></a> [resource\_url](#input\_resource\_url) | The url to download a DGW installer | `string` | `"https://soda-dante-connect.s3.ap-southeast-2.amazonaws.com/dgw"` | no |
+| <a name="input_resource_url"></a> [resource\_url](#input\_resource\_url) | The url to download a DGW installer | `string` | `"https://audinate-dante-connect.sgp1.cdn.digitaloceanspaces.com/dgw"` | no |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | The VPC Subnet ID the DGW instance will be launched in | `string` | n/a | yes |
 | <a name="input_volume_size"></a> [volume\_size](#input\_volume\_size) | (Optional) Size of the volume in gibibytes (GiB) | `number` | `null` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The VPC ID the DGW instance will be created in | `string` | n/a | yes |

@@ -1,4 +1,4 @@
-<!-- Copyright 2024 Audinate Pty Ltd and/or its licensors -->
+<!-- Copyright 2024-2025 Audinate Pty Ltd and/or its licensors -->
 
 # Remote Monitor
 
@@ -189,7 +189,7 @@ module "remote_monitor" {
 | <a name="input_license_key"></a> [license\_key](#input\_license\_key) | The Remote Monitor license provided by Audinate | `string` | `null` | no |
 | <a name="input_license_server"></a> [license\_server](#input\_license\_server) | (Optional) License settings<br>license\_server = {<br>  hostname    = "License server hostname"<br>  api\_key     = "License server api key"<br>} | <pre>object({<br>    hostname = string<br>    api_key  = string<br>  })</pre> | <pre>{<br>  "api_key": "638hPLfZd3nvZ4tXP",<br>  "hostname": "https://software-license-danteconnect.svc.audinate.com"<br>}</pre> | no |
 | <a name="input_license_websocket_port"></a> [license\_websocket\_port](#input\_license\_websocket\_port) | License websocket port number | `number` | `49999` | no |
-| <a name="input_resource_url"></a> [resource\_url](#input\_resource\_url) | The url to download a remote-monitor installer | `string` | `"https://soda-dante-connect.s3.ap-southeast-2.amazonaws.com/remote-monitor"` | no |
+| <a name="input_resource_url"></a> [resource\_url](#input\_resource\_url) | The url to download a remote-monitor installer | `string` | `"https://audinate-dante-connect.sgp1.cdn.digitaloceanspaces.com/remote-monitor"` | no |
 | <a name="input_stun_server_config"></a> [stun\_server\_config](#input\_stun\_server\_config) | (Optional) Stun server configuration provided e.g. stun.l.google.com:19302 | `string` | `null` | no |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | The VPC Subnet ID the Remote Monitor instance will be launched in | `string` | n/a | yes |
 | <a name="input_turn_server_config"></a> [turn\_server\_config](#input\_turn\_server\_config) | (Optional) Turn server configuration provided e.g. [turn:<username>:<password>@<host>:<port>?transport=<tcp\|udp\|tls>, ...] | `list(string)` | `null` | no |

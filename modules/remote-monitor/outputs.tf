@@ -4,7 +4,7 @@
 # Authors :
 # Synopsis:
 #
-# Copyright 2024 Audinate Pty Ltd and/or its licensors
+# Copyright 2024-2025 Audinate Pty Ltd and/or its licensors
 #
 
 output "ec2_remote_monitor_instance_id" {

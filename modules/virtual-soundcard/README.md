@@ -1,4 +1,4 @@
-<!-- Copyright 2023 Audinate Pty Ltd and/or its licensors -->
+<!-- Copyright 2023-2025 Audinate Pty Ltd and/or its licensors -->
 
 # Dante Virtual Soundcard
 
@@ -144,14 +144,14 @@ module "dvs" {
 | <a name="input_dvs_version"></a> [dvs\_version](#input\_dvs\_version) | (Deprecated) The version of the DVS to be installed | `string` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the environment | `string` | n/a | yes |
 | <a name="input_install_reaper"></a> [install\_reaper](#input\_install\_reaper) | (Optional) True to install REAPER on the DVS for advanced testing | `bool` | `false` | no |
-| <a name="input_installer_version"></a> [installer\_version](#input\_installer\_version) | The version of the DVS to be installed | `string` | `"4.4.1.3"` | no |
+| <a name="input_installer_version"></a> [installer\_version](#input\_installer\_version) | The version of the DVS to be installed | `string` | `"4.5.0.5"` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Instance type to use for the DVS instance. Updates to this field will trigger a stop/start of the instance.<br>    If not provided, defaults based on the channel count configuration will be used:<br>    "m5.large" for up to and including 64 channels, "m5.2xlarge" for more than 64 channels. | `string` | `null` | no |
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | (Optional) Name of the key pair to use to connect to the instance | `string` | `null` | no |
 | <a name="input_latency"></a> [latency](#input\_latency) | (Optional) The latency threshold in milliseconds | `number` | `10` | no |
 | <a name="input_license_key"></a> [license\_key](#input\_license\_key) | The DVS license provided by Audinate | `string` | `null` | no |
 | <a name="input_license_server"></a> [license\_server](#input\_license\_server) | n/a | <pre>object({<br>    hostname = string<br>    api_key  = string<br>  })</pre> | <pre>{<br>  "api_key": "638hPLfZd3nvZ4tXP",<br>  "hostname": "https://software-license-danteconnect.svc.audinate.com"<br>}</pre> | no |
 | <a name="input_licensed_channel_count"></a> [licensed\_channel\_count](#input\_licensed\_channel\_count) | (Optional) The number of licensed channels | `number` | `null` | no |
-| <a name="input_resource_url"></a> [resource\_url](#input\_resource\_url) | The url to download the DVS installer and tools | `string` | `"https://soda-dante-connect.s3.ap-southeast-2.amazonaws.com/dvs"` | no |
+| <a name="input_resource_url"></a> [resource\_url](#input\_resource\_url) | The url to download the DVS installer and tools | `string` | `"https://audinate-dante-connect.sgp1.cdn.digitaloceanspaces.com/dvs"` | no |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | The VPC Subnet ID the DVS instance will be launched in | `string` | n/a | yes |
 | <a name="input_volume_size"></a> [volume\_size](#input\_volume\_size) | (Optional) Size of the volume in gibibytes (GiB) | `number` | `null` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The VPC ID the DDM instance will be created in | `string` | n/a | yes |

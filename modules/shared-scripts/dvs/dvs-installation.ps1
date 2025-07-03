@@ -1,4 +1,4 @@
-# Copyright © 2023 Audinate Pty Ltd ACN 120 828 006 (Audinate). All rights reserved.
+# Copyright 2023-2025 Audinate Pty Ltd ACN 120 828 006 (Audinate). All rights reserved.
 # This script requires the DVS_VERSION env variable to be set prior to execution
 
 if (-not $Env:DVS_VERSION) {
@@ -56,7 +56,7 @@ if (-Not (FileExists $WorkingDir )) {
 Set-Location $WorkingDir
 
 # To avoid false Defender reports on DVS
-AddDefenderExclusion "C:\Program Files (x86)\Audinate\Dante Virtual Soundcard"
+AddDefenderExclusion "C:\Program Files\Audinate\Dante Virtual Soundcard"
 
 # Download and extract DVS Installer and DVS Command Line interface
 Write-Output "Download Installers"
@@ -91,7 +91,7 @@ Write-Output "Remove files Done!"
 # Create the DVS configuration script
 Write-Output "Create config script"
 $DVSConfigScript = @"
-# Copyright (C) 2023 Audinate Pty Ltd ACN 120 828 006 (Audinate). All rights reserved.
+# Copyright 2023-2025 Audinate Pty Ltd ACN 120 828 006 (Audinate). All rights reserved.
 
 param (
     [Parameter(Mandatory)][string]`$DVSLicense,
@@ -110,8 +110,8 @@ if (`$DDMAddress -and (-not `$(`$DDMAddress.Ip) -or -not `$(`$DDMAddress.Port)))
 
 # If both LicenseServerHostname and LicenseServerApiKey override New-ItemProperty with Force flag to update values when exist
 if( `$LicenseServerApiKey -and `$LicenseServerHostname) {
-New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Audinate'\Dante Virtual Soundcard\' -Name LicenseServerHostname -PropertyType String -Value `$LicenseServerHostname -Force
-New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Audinate'\Dante Virtual Soundcard\' -Name LicenseServerApiKey -PropertyType String -Value `$LicenseServerApiKey -Force
+New-ItemProperty -Path HKLM:\SOFTWARE\Audinate'\Dante Virtual Soundcard\' -Name LicenseServerHostname -PropertyType String -Value `$LicenseServerHostname -Force
+New-ItemProperty -Path HKLM:\SOFTWARE\Audinate'\Dante Virtual Soundcard\' -Name LicenseServerApiKey -PropertyType String -Value `$LicenseServerApiKey -Force
 Restart-Service dvs.manager
 }
 

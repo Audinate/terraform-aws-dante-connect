@@ -4,7 +4,7 @@
 # Authors :
 # Synopsis:
 #
-# Copyright 2023 Audinate Pty Ltd and/or its licensors
+# Copyright 2023-2025 Audinate Pty Ltd and/or its licensors
 #
 #
 variable "instance_type" {
@@ -180,14 +180,14 @@ variable "installer_version" {
   description = "The version of the DVS to be installed"
   type        = string
   nullable    = false
-  default     = "4.4.1.3"
+  default     = "4.5.0.5"
 }
 
 variable "resource_url" {
   description = "The url to download the DVS installer and tools"
   type        = string
   nullable    = false
-  default     = "https://soda-dante-connect.s3.ap-southeast-2.amazonaws.com/dvs"
+  default     = "https://audinate-dante-connect.sgp1.cdn.digitaloceanspaces.com/dvs"
 }
 
 variable "associate_public_ip_address" {

@@ -4,7 +4,7 @@
 # Authors :
 # Synopsis:
 #
-# Copyright 2024 Audinate Pty Ltd and/or its licensors
+# Copyright 2024-2025 Audinate Pty Ltd and/or its licensors
 #
 #
 variable "instance_type" {
@@ -122,7 +122,7 @@ variable "resource_url" {
   description = "The url to download a remote-contributor installer"
   type        = string
   nullable    = false
-  default     = "https://soda-dante-connect.s3.ap-southeast-2.amazonaws.com/remote-contributor"
+  default     = "https://audinate-dante-connect.sgp1.cdn.digitaloceanspaces.com/remote-contributor"
 }
 
 variable "associate_public_ip_address" {

@@ -1,4 +1,4 @@
-<!-- Copyright 2023 Audinate Pty Ltd and/or its licensors -->
+<!-- Copyright 2023-2025 Audinate Pty Ltd and/or its licensors -->
 
 # Audinate Dante Connect Terraform Module
 
@@ -61,4 +61,4 @@ module "dvs" {
 Please use the [issue tracker](https://github.com/terraform-audinate-modules/terraform-aws-dante-connect/issues) to report any bugs or file feature requests.
 
 ## Copyright
-Copyright © 2023 Audinate Pty Ltd and/or its licensors
+Copyright 2023-2025 Audinate Pty Ltd and/or its licensors
